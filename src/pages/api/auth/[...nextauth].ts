@@ -8,7 +8,6 @@ import NextAuth from "next-auth";
 import Providers from "next-auth/providers";
 import { initializeApollo } from "@/graphql/apollo";
 import { NextApiRequest, NextApiResponse } from "next";
-import nextConfig from "next.config";
 
 interface ICredentials {
   email: string;
@@ -101,7 +100,7 @@ const options = {
     secret: process.env.SECRET_KEY,
   },
   pages: {
-    signIn: `${nextConfig.basePath}/login`,
+    signIn: `${process.env.basePath}/login`,
   },
 };
 

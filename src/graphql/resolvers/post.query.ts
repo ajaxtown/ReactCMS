@@ -205,6 +205,7 @@ const Query: QueryResolvers<ResolverContext> = {
         count,
       };
     } catch (e) {
+      logger.error(e);
       debug("letterpad:post:update")(e);
       return { __typename: "PostError", message: e.message };
     }

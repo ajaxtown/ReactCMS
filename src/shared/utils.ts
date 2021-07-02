@@ -5,7 +5,6 @@ import {
   SettingsQuery,
   SettingsQueryVariables,
 } from "@/__generated__/queries/queries.graphql";
-import nextConfig from "../../next.config";
 import Router from "next/router";
 import NProgress from "nprogress";
 import { IUploadFileProps } from "./types";
@@ -80,7 +79,7 @@ export const uploadFile = async ({
     data.append(`file`, files[i]);
   }
 
-  return fetch(nextConfig.basePath + "/api/uploadApi", {
+  return fetch(process.env.basePath + "/api/uploadApi", {
     method: "post",
     body: data,
     headers: {

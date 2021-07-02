@@ -1,3 +1,4 @@
+import { callbacks } from "../../shared/callbacks";
 import { Subjects } from "./../../mail/index";
 import Cryptr from "cryptr";
 import jwt from "jsonwebtoken";
@@ -38,7 +39,7 @@ const Author = {
       const role = await author.getRole();
       return role.name;
     } catch (e) {
-      throw new Error(e);
+      logger.error(e);
     }
   },
   permissions: async ({ id }) => {
@@ -50,7 +51,7 @@ const Author = {
       const permissions = await role.getPermissions();
       return permissions.map((p) => p.name);
     } catch (e) {
-      throw new Error(e);
+      logger.error(e);
     }
   },
 };
@@ -85,8 +86,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
         process.env.RECAPTCHA_KEY,
         args.data.token,
       );
-
-      if (!response) {
+      if (!response && process.env.NODE_ENV === "production") {
         return {
           __typename: "CreateAuthorError",
           message: "We cannot allow you at the moment.",
@@ -195,7 +195,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
           ...author,
         };
       } catch (e) {
-        console.log(e);
+        logger.error(e);
       }
     }
     return {
@@ -220,12 +220,13 @@ const Mutation: MutationResolvers<ResolverContext> = {
       await models.Author.update(dataToUpdate as any, {
         where: { id: args.author.id },
       });
-
+      callbacks.AUTHOR_UPDATE();
       return {
         ok: true,
         errors: [],
       };
     } catch (e) {
+      logger.error(e);
       return {
         ok: false,
         errors: e, //utils.parseErrors(e),
@@ -259,6 +260,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
         msg: "Check your email to recover your password",
       };
     } catch (e) {
+      logger.error(e);
       return {
         ok: false,
         msg: "Something unexpected happened",
@@ -294,6 +296,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
         msg: "Password changed successfully",
       };
     } catch (e) {
+      logger.error(e);
       return {
         ok: false,
         msg: e.message,
@@ -357,6 +360,7 @@ async function isDatabaseSeeded(): Promise<boolean> {
     await models.sequelize.query("SELECT * FROM authors");
     return true;
   } catch (e) {
+    logger.error(e);
     if (e.name === "SequelizeDatabaseError") {
       return false;
     }

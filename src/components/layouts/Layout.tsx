@@ -43,8 +43,8 @@ const CustomLayout = ({ children, settings }: IProps) => {
       <Sider
         breakpoint="lg"
         collapsedWidth="0"
-        onBreakpoint={(broken) => {
-          console.log(broken);
+        onBreakpoint={(_broken) => {
+          //
         }}
         onCollapse={(isCollapsed) => {
           setCollapsed(isCollapsed);

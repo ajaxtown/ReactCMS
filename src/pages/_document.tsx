@@ -1,4 +1,3 @@
-import nextConfig from "next.config";
 import Document, { Html, Head, Main, NextScript } from "next/document";
 
 class MyDocument extends Document {
@@ -14,7 +13,7 @@ class MyDocument extends Document {
           <link
             rel="stylesheet"
             id="theme"
-            href={nextConfig.basePath + "/css/antd.css"}
+            href={process.env.basePath + "/css/antd.css"}
           />
         </Head>
         <body>

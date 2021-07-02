@@ -1,5 +1,4 @@
 import { Switch } from "antd";
-import nextConfig from "next.config";
 import { useEffect, useState } from "react";
 
 const ThemeSwitcher = () => {
@@ -45,7 +44,7 @@ ThemeSwitcher.switch = (color) => {
   }
   const $style = document.querySelector("#theme");
   if ($style) {
-    $style.setAttribute("href", nextConfig.basePath + stylePath);
+    $style.setAttribute("href", process.env.basePath + stylePath);
   }
 
   localStorage.theme = color;

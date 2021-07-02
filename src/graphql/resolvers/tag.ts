@@ -1,3 +1,4 @@
+import { callbacks } from "../../shared/callbacks";
 import { GroupOption, Includeable, Order } from "sequelize";
 import { ResolverContext } from "../apollo";
 import { QueryResolvers, MutationResolvers } from "@/__generated__/__types__";
@@ -123,10 +124,12 @@ const Mutation: MutationResolvers<ResolverContext> = {
     args.data.slug = args.data.slug?.split("/").pop();
     if (args.data.id === 0) {
       tag = await author.createTag(args.data);
+      callbacks.TAG_NEW();
     } else {
       tag = await models.Tags.update(args.data, {
         where: { id: args.data.id },
       });
+      callbacks.TAG_UPDATE();
     }
 
     if (!tag) {
@@ -154,6 +157,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
     });
 
     if (deleteRowCount === 1) {
+      callbacks.TAG_DELETE();
       return {
         __typename: "DeleteTagsResult",
         ok: true,

@@ -17,6 +17,7 @@ import {
 import logger from "./../../shared/logger";
 import models from "../db/models";
 import { getDateTime } from "./../../shared/utils";
+import { callbacks } from "src/shared/callbacks";
 
 export const slugOfUntitledPost = "untitled";
 
@@ -53,6 +54,10 @@ const Mutation: MutationResolvers<ResolverContext> = {
     const newPost = await author?.createPost(args.data as any);
 
     if (newPost) {
+      newPost.type === PostTypes.Post
+        ? callbacks.POST_NEW()
+        : callbacks.PAGE_NEW();
+
       return {
         __typename: "Post",
         ...newPost.get(),
@@ -71,6 +76,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
         message: "Authentication failed",
       };
     }
+
     try {
       if (!args.data) {
         return {
@@ -237,6 +243,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
               });
               if (tagFound) {
                 await previousPostRaw.addTag(tagFound);
+                callbacks.POST_UPDATE();
               }
               logger.debug(`Added existing tags (${tag.name}) with id`, tag.id);
             } else {
@@ -250,6 +257,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
                   slug: tag.name.toLowerCase(),
                 });
                 if (newTag) {
+                  callbacks.TAG_NEW();
                   logger.debug(`Created new tag (${tag.name})`);
                   await previousPostRaw.addTag(newTag);
                   logger.debug("Linked tags to post", tag.name);
@@ -267,6 +275,9 @@ const Mutation: MutationResolvers<ResolverContext> = {
         where: { id: args.data.id },
       });
 
+      if (dataToUpdate.status === PostStatusOptions.Published) {
+        callbacks.PUBLISHED();
+      }
       const post = await models.Post.findOne({
         where: { id: args.data.id },
       });
@@ -277,12 +288,16 @@ const Mutation: MutationResolvers<ResolverContext> = {
           message: "Updated post not found",
         };
       }
+      post.type === PostTypes.Post
+        ? callbacks.POST_UPDATE()
+        : callbacks.PAGE_UPDATE();
+
       return {
         __typename: "Post",
         ...post.get(),
       };
     } catch (e) {
-      console.log(e);
+      logger.error(e);
     }
   },
 };

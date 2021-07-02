@@ -8,7 +8,6 @@ import { NextComponentType, NextPageContext } from "next";
 import { Provider } from "next-auth/client";
 import { ComponentType } from "react";
 import Head from "next/head";
-import nextConfig from "next.config";
 
 interface IProps {
   apolloClient: ApolloClient<NormalizedCacheObject>;
@@ -21,10 +20,10 @@ const Main = ({ apolloClient, Layout, settings, Component, props }: IProps) => {
   return (
     <Provider
       session={props.session}
-      options={{ basePath: nextConfig.basePath + "/api/auth" }}
+      options={{ basePath: process.env.basePath + "/api/auth" }}
     >
       <Head>
-        <link rel="icon" href={nextConfig.basePath + "/uploads/logo.png"} />
+        <link rel="icon" href={process.env.basePath + "/uploads/logo.png"} />
       </Head>
       <ApolloProvider client={apolloClient}>
         <Layout settings={settings}>

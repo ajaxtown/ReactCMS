@@ -2,7 +2,6 @@ import { getSession } from "next-auth/client";
 import { SessionData } from "./types";
 import { IncomingMessage, ServerResponse } from "http";
 import { useMemo } from "react";
-import nextConfig from "../../next.config";
 import {
   ApolloClient,
   InMemoryCache,
@@ -28,7 +27,7 @@ function createIsomorphLink(context: ResolverContext = {}) {
   } else {
     const { HttpLink } = require("@apollo/client");
 
-    const basePath = nextConfig.basePath;
+    const basePath = process.env.basePath;
     return new HttpLink({
       uri: basePath + "/api/graphql",
       credentials: "same-origin",

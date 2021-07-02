@@ -4,7 +4,6 @@ import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { IMediaUploadResult } from "@/graphql/types";
 import { UploadChangeParam } from "antd/lib/upload";
 import Modal from "antd/lib/modal/Modal";
-import nextConfig from "../../next.config";
 import FileExplorer from "./file-explorer";
 import { getBase64 } from "./../shared/utils";
 
@@ -83,7 +82,7 @@ const ImageUpload = ({ url, onDone, name }: IProps) => {
           listType="picture-card"
           className="avatar-uploader"
           showUploadList={true}
-          action={nextConfig.basePath + "/api/uploadApi"}
+          action={process.env.basePath + "/api/uploadApi"}
           beforeUpload={beforeUpload}
           onChange={handleChange}
           fileList={fileList}

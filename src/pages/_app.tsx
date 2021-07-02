@@ -3,7 +3,6 @@ import { ApolloClient, NormalizedCacheObject } from "@apollo/client";
 import { useApollo } from "@/graphql/apollo";
 import { Provider } from "next-auth/client";
 import { useRouter } from "next/router";
-import nextConfig from "../../next.config";
 import type { Page } from "../page";
 import { PropsWithChildren, useEffect, useState } from "react";
 import { Setting } from "@/__generated__/__types__";
@@ -51,7 +50,7 @@ function App({ Component, pageProps }: Props) {
     return (
       <Provider
         session={pageProps.session}
-        options={{ basePath: nextConfig.basePath + "/api/auth" }}
+        options={{ basePath: process.env.basePath + "/api/auth" }}
       >
         <Component {...pageProps} />
       </Provider>

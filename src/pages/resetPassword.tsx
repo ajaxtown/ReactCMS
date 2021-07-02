@@ -16,7 +16,6 @@ import {
   Block,
 } from "@/components/login.css";
 import Head from "next/head";
-import nextConfig from "next.config";
 
 const key = "change-password";
 
@@ -24,7 +23,7 @@ const ResetPassword = () => {
   const [password, setPassword] = useState("");
   const router = useRouter();
 
-  const resetPassword = async e => {
+  const resetPassword = async (e) => {
     e.preventDefault();
     if (password.length === 0) {
       message.error({
@@ -64,7 +63,7 @@ const ResetPassword = () => {
         duration: 1000,
         key,
       });
-      router.push(`${nextConfig.basePath}/login`);
+      router.push(`${process.env.basePath}/login`);
     } else if (!data?.ok) {
       message.error({
         content:
@@ -88,7 +87,7 @@ const ResetPassword = () => {
               type="password"
               className="form-control"
               placeholder="Enter your new password"
-              onChange={e => setPassword(e.target.value)}
+              onChange={(e) => setPassword(e.target.value)}
               value={password}
               autoComplete="off"
             />

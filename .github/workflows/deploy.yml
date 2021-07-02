@@ -34,6 +34,9 @@ jobs:
         run: yarn run build
         env:
           SECRET_KEY: ${{ secrets.SECRET_LP_KEY }}
+          SENTRY_ORG: ${{secrets.SENTRY_ORG}}
+          SENTRY_PROJECT: ${{secrets.SENTRY_PROJECT}}
+          SENTRY_AUTH_TOKEN: ${{secrets.SENTRY_AUTH_TOKEN}}
 
       - name: Type check
         run: yarn type-check
@@ -56,4 +59,5 @@ jobs:
           port: ${{ secrets.PORT }}
           key: ${{ secrets.DEPLOY_KEY }}
           script: |
+            yarn sync-models
             pm2 restart letterpad-admin

@@ -26,7 +26,6 @@ function absPath(p) {
 let models: typeof dbModels;
 export const seed = async (_models: typeof dbModels, folderCheck = true) => {
   models = _models;
-
   if (folderCheck) {
     console.time("ensure data directories");
     await Promise.all([

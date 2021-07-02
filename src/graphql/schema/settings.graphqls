@@ -36,6 +36,7 @@ type Setting {
   site_logo: Image!
   site_favicon: Image!
   client_token: String!
+  ping_url: String!
 }
 
 input InputNavigation {
@@ -75,6 +76,7 @@ input OptionInputType {
   banner: InputImage
   site_logo: InputImage
   site_favicon: InputImage
+  ping_url: String
 }
 
 type SettingError implements LetterpadError {

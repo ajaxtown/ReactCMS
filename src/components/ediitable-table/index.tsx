@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect, useRef } from "react";
 import { Input, Form } from "antd";
 import { FormInstance } from "antd/lib/form";
+import logger from "../../shared/logger";
 
 const EditableContext = React.createContext<FormInstance<any> | null>(null);
 
@@ -71,7 +72,7 @@ export const EditableCell: React.FC<EditableCellProps> = ({
       toggleEdit();
       handleSave({ ...record, ...values });
     } catch (errInfo) {
-      console.log("Save failed:", errInfo);
+      logger.error(errInfo);
     }
   };
 

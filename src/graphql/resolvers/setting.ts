@@ -1,3 +1,4 @@
+import { callbacks } from "../../shared/callbacks";
 import { ResolverContext } from "../apollo";
 import type {
   QueryResolvers,
@@ -10,12 +11,14 @@ import fs from "fs";
 import path from "path";
 import models from "../db/models";
 import { settingsData } from "../db/models/setting";
+import logger from "../../shared/logger";
 
 type ValueOf<T> = T[keyof T];
 const SECURE_SETTINGS = [
   "cloudinary_key",
   "cloudinary_name",
   "cloudinary_secret",
+  "ping_url",
 ];
 
 const cssPath = path.join(process.cwd(), "public/css/custom.css");
@@ -114,8 +117,9 @@ const Mutation: MutationResolvers<ResolverContext> = {
 
     try {
       await Promise.all(promises);
+      callbacks.SETTINGS_CHANGED();
     } catch (e) {
-      console.log("e :>> ", e);
+      logger.error(e);
     }
 
     const setting = await models.Setting.findOne({

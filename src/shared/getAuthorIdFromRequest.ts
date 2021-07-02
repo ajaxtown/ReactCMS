@@ -33,7 +33,7 @@ export default async (context: Context) => {
       }
     }
   } catch (e) {
-    console.error("Error in getting author_id from request", e);
+    logger.error(e);
   }
   return author_id;
 };

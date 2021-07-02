@@ -29,6 +29,7 @@ export interface SettingAttributes {
   site_logo: Image;
   site_favicon: Image;
   client_token: string;
+  ping_url: string;
 }
 
 export interface SettingCreationAttributes
@@ -63,6 +64,7 @@ export class Setting
   public site_logo!: Image;
   public site_favicon!: Image;
   public client_token!: string;
+  public ping_url!: string;
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -175,6 +177,10 @@ export default function initSetting(sequelize) {
         type: DataTypes.JSON,
         defaultValue: {},
       },
+      ping_url: {
+        type: DataTypes.STRING(200),
+        defaultValue: "",
+      },
     },
     {
       tableName: "settings",
@@ -243,4 +249,5 @@ export const settingsData = {
     width: 1502,
     height: 900,
   },
+  ping_url: "",
 };

@@ -24,9 +24,9 @@ import { debounce, uploadFile, removeTypenames } from "./../../shared/utils";
 import FileExplorer from "@/components/file-explorer";
 import withAuthCheck from "../../hoc/withAuth";
 import ErrorMessage from "@/components/ErrorMessage";
-import nextConfig from "next.config";
 import { LoadingOutlined } from "@ant-design/icons";
 import Head from "next/head";
+import logger from "../../shared/logger";
 
 const { Content } = Layout;
 
@@ -67,7 +67,7 @@ function Post() {
       if (data.__typename === "Post") {
         setPost(data);
 
-        fetch(nextConfig.basePath + "/api/getPostHash?id=" + data.id)
+        fetch(process.env.basePath + "/api/getPostHash?id=" + data.id)
           .then((res) => res.text())
           .then(setPostHash);
       }
@@ -124,7 +124,7 @@ function Post() {
           resolve(true);
         } catch (e) {
           reject();
-          console.error(e);
+          logger.error(e);
         }
       });
     });

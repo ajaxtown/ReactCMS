@@ -20,7 +20,6 @@ import { uploadToInternal } from "./providers/internal";
 import models from "@/graphql/db/models";
 import initMiddleware from "./middleware";
 import crypto from "crypto";
-import nextConfig from "next.config";
 
 const upload = multer();
 const uploadDir = path.join(process.cwd(), "public/uploads/");
@@ -91,7 +90,6 @@ export default async (
       try {
         let result: IMediaUploadResult;
         if (cdnEnabled) {
-          console.log("cdnEnabled :>> ", cdnEnabled);
           result = await uploadToCloudinary(file, uploadPath, {
             api_key: cloudinary_key,
             cloud_name: cloudinary_name,
@@ -101,7 +99,7 @@ export default async (
           result = await uploadToInternal(
             file,
             uploadPath,
-            nextConfig.basePath + "/uploads/" + filename,
+            process.env.basePath + "/uploads/" + filename,
           );
         }
         await upsertMedia(result, session.user.id);

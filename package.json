@@ -11,6 +11,7 @@
     "test": "yarn codegen && jest --runInBand",
     "start": "next start",
     "seed": "ts-node -r tsconfig-paths/register --transpile-only ./src/graphql/db/seed",
+    "sync-models": "ts-node -r tsconfig-paths/register --transpile-only ./src/graphql/db/seed/syncModels",
     "type-check": "yarn tsc"
   },
   "dependencies": {
@@ -20,6 +21,7 @@
     "@graphql-tools/merge": "6.0.18",
     "@graphql-tools/schema": "6.0.18",
     "@sendgrid/mail": "^7.4.2",
+    "@sentry/nextjs": "^6.8.0",
     "@types/bcryptjs": "^2.4.2",
     "@types/styled-components": "^5.1.9",
     "antd": "^4.15.1",
